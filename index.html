@@ -1,0 +1,1768 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Absensi Karyawan SPPG GUNUNG PICUNG #005</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+    <style>
+        /* CSS tetap sama seperti sebelumnya */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #3498db 0%, #2c3e50 100%);
+            padding: 20px;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            margin: 20px auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+        
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 30px;
+            position: relative;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f1f8ff;
+        }
+        
+        .logo {
+            width: 90px;
+            height: 90px;
+            margin-right: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #3498db 0%, #2c3e50 100%);
+            border-radius: 50%;
+            color: white;
+            font-size: 36px;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            font-size: 32px;
+            font-weight: 700;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        h2 {
+            color: #3498db;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f1f8ff;
+            font-size: 24px;
+        }
+        
+        h3 {
+            color: #2c3e50;
+            margin: 25px 0 15px;
+            font-size: 20px;
+        }
+        
+        .tabs {
+            display: flex;
+            margin-bottom: 25px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+        }
+        
+        .tab-button {
+            padding: 16px;
+            flex: 1;
+            text-align: center;
+            background: #e9ecef;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            color: #6c757d;
+        }
+        
+        .tab-button.active {
+            background: #3498db;
+            color: white;
+            box-shadow: 0 3px 8px rgba(52, 152, 219, 0.3);
+        }
+        
+        .tab-button:hover {
+            background: #ced4da;
+            color: #2c3e50;
+        }
+        
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .form-row .form-group {
+            flex: 1;
+            margin-bottom: 0;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 15px;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s;
+            background-color: #f8fafc;
+        }
+        
+        input:focus, select:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.2);
+            background-color: #fff;
+        }
+        
+        button {
+            background: linear-gradient(to right, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 16px 24px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            width: 100%;
+            margin-top: 15px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
+        }
+        
+        button:hover {
+            background: linear-gradient(to right, #2980b9, #2573a7);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(52, 152, 219, 0.4);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        button.secondary {
+            background: linear-gradient(to right, #2ecc71, #27ae60);
+            box-shadow: 0 4px 8px rgba(46, 204, 113, 0.3);
+        }
+        
+        button.secondary:hover {
+            background: linear-gradient(to right, #27ae60, #219653);
+            box-shadow: 0 6px 12px rgba(46, 204, 113, 0.4);
+        }
+        
+        button.warning {
+            background: linear-gradient(to right, #f39c12, #e67e22);
+            box-shadow: 0 4px 8px rgba(243, 156, 18, 0.3);
+        }
+        
+        button.warning:hover {
+            background: linear-gradient(to right, #e67e22, #d35400);
+            box-shadow: 0 6px 12px rgba(243, 156, 18, 0.4);
+        }
+        
+        .camera-container {
+            margin: 25px 0;
+            text-align: center;
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        #video, #canvas {
+            width: 100%;
+            max-width: 500px;
+            border-radius: 12px;
+            border: 3px solid #3498db;
+            display: none;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .camera-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .camera-buttons button {
+            flex: 1;
+            margin-top: 0;
+        }
+        
+        .captured-photo {
+            margin-top: 25px;
+            text-align: center;
+            display: none;
+        }
+        
+        .captured-photo img {
+            max-width: 100%;
+            border-radius: 12px;
+            border: 3px solid #2ecc71;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .photo-info {
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #f1f8ff;
+            border-radius: 10px;
+            font-size: 16px;
+            color: #2c3e50;
+        }
+        
+        .attendance-list {
+            margin-top: 35px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        th, td {
+            border: 1px solid #e2e8f0;
+            padding: 15px 18px;
+            text-align: left;
+        }
+        
+        th {
+            background: linear-gradient(to right, #3498db, #2980b9);
+            color: white;
+            font-weight: 600;
+            text-align: center;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+        
+        tr:hover {
+            background-color: #f1f8ff;
+        }
+        
+        .success-message {
+            background: linear-gradient(to right, #d4edda, #c3e6cb);
+            color: #155724;
+            padding: 18px;
+            border-radius: 10px;
+            margin-top: 20px;
+            display: none;
+            text-align: center;
+            border-left: 5px solid #28a745;
+        }
+        
+        .error-message {
+            background: linear-gradient(to right, #f8d7da, #f5c6cb);
+            color: #721c24;
+            padding: 18px;
+            border-radius: 10px;
+            margin-top: 20px;
+            display: none;
+            text-align: center;
+            border-left: 5px solid #dc3545;
+        }
+        
+        .employee-card {
+            background: linear-gradient(to right, #ffffff, #f8fafc);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            border-left: 5px solid #3498db;
+            transition: transform 0.3s;
+        }
+        
+        .employee-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.08);
+        }
+        
+        .employee-info {
+            flex: 1;
+        }
+        
+        .employee-name {
+            font-weight: bold;
+            font-size: 19px;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        
+        .employee-division {
+            color: #6c757d;
+            font-size: 15px;
+        }
+        
+        .employee-actions {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .action-btn {
+            padding: 10px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            border: none;
+            color: white;
+            transition: all 0.3s;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+        }
+        
+        .delete-btn {
+            background: linear-gradient(to right, #e74c3c, #c0392b);
+        }
+        
+        .delete-btn:hover {
+            background: linear-gradient(to right, #c0392b, #a33226);
+        }
+        
+        .whatsapp-btn {
+            background: linear-gradient(to right, #25D366, #128C7E);
+        }
+        
+        .whatsapp-btn:hover {
+            background: linear-gradient(to right, #128C7E, #0C6B52);
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 30px 0;
+            text-align: center;
+            gap: 20px;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #3498db 0%, #2c3e50 100%);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+            flex: 1;
+            color: white;
+            transition: transform 0.3s;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .stat-number {
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        
+        .stat-title {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        
+        .search-container {
+            margin-bottom: 25px;
+            position: relative;
+        }
+        
+        .search-container i {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6c757d;
+            font-size: 18px;
+        }
+        
+        .search-container input {
+            padding-left: 50px;
+        }
+        
+        .login-container {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            max-width: 450px;
+            width: 100%;
+            text-align: center;
+        }
+        
+        .login-form {
+            margin-top: 25px;
+        }
+        
+        .admin-only {
+            display: none;
+        }
+        
+        .admin-active .admin-only {
+            display: block;
+        }
+        
+        .admin-active .admin-tab {
+            display: flex;
+        }
+        
+        .admin-tab {
+            display: none;
+        }
+        
+        .logout-btn {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            background: linear-gradient(to right, #e74c3c, #c0392b);
+            padding: 10px 18px;
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+            border: none;
+            box-shadow: 0 4px 8px rgba(231, 76, 60, 0.3);
+            transition: all 0.3s;
+        }
+        
+        .logout-btn:hover {
+            background: linear-gradient(to right, #c0392b, #a33226);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(231, 76, 60, 0.4);
+        }
+        
+        .salary-table {
+            margin-top: 25px;
+        }
+        
+        .salary-table th {
+            background: linear-gradient(to right, #2c3e50, #34495e);
+        }
+        
+        .download-btn {
+            background: linear-gradient(to right, #e74c3c, #c0392b);
+            margin-top: 15px;
+            box-shadow: 0 4px 8px rgba(231, 76, 60, 0.3);
+        }
+        
+        .download-btn:hover {
+            background: linear-gradient(to right, #c0392b, #a33226);
+            box-shadow: 0 6px 12px rgba(231, 76, 60, 0.4);
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+            
+            .container {
+                padding: 20px;
+            }
+            
+            .stats {
+                flex-direction: column;
+            }
+            
+            .stat-card {
+                margin: 10px 0;
+            }
+            
+            .employee-card {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .employee-actions {
+                margin-top: 15px;
+                justify-content: center;
+            }
+            
+            .header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .logo {
+                margin-right: 0;
+                margin-bottom: 20px;
+            }
+            
+            .logout-btn {
+                position: relative;
+                top: 0;
+                right: 0;
+                margin-bottom: 20px;
+                width: 100%;
+            }
+            
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+            
+            .camera-buttons {
+                flex-direction: column;
+            }
+            
+            .login-container {
+                padding: 25px;
+            }
+            
+            h1 {
+                font-size: 26px;
+            }
+            
+            h2 {
+                font-size: 22px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Form -->
+    <div id="loginPage" class="login-container">
+        <div class="logo" style="margin: 0 auto 20px; width: 80px; height: 80px; font-size: 32px;">SPPG</div>
+        <h2 style="color: #2c3e50; margin-bottom: 10px;"><i class="fas fa-lock"></i> Login Administrator</h2>
+        <p style="color: #6c757d;">Silakan login untuk mengakses sistem absensi karyawan</p>
+        
+        <div class="login-form">
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" placeholder="Masukkan username" value="admin">
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" placeholder="Masukkan password" value="admin123">
+            </div>
+            
+            <button onclick="login()">Login</button>
+            
+            <div id="loginError" class="error-message">
+                Username atau password salah!
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Application (Initially Hidden) -->
+    <div id="appContainer" class="container" style="display:none">
+        <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+        
+        <div class="header">
+            <div class="logo">SPPG</div>
+            <h1>ABSENSI KARYAWAN SPPG GUNUNG PICUNG #005</h1>
+        </div>
+        
+        <div class="tabs">
+            <button class="tab-button active" onclick="showTab('input-tab')">Input Karyawan</button>
+            <button class="tab-button" onclick="showTab('attendance-tab')">Absensi</button>
+            <button class="tab-button" onclick="showTab('report-tab')">Laporan</button>
+            <button class="tab-button" onclick="showTab('salary-tab')">Penggajian</button>
+        </div>
+        
+        <!-- Tab Input Karyawan -->
+        <div id="input-tab" class="tab-content active">
+            <div class="admin-only">
+                <h2>Input Data Karyawan Baru</h2>
+                
+                <div class="form-group">
+                    <label for="employeeName">Nama Karyawan:</label>
+                    <input type="text" id="employeeName" placeholder="Masukkan nama lengkap">
+                </div>
+                
+                <div class="form-group">
+                    <label for="employeeDivision">Divisi:</label>
+                    <select id="employeeDivision">
+                        <option value="">Pilih Divisi</option>
+                        <option value="Masak">Divisi Masak</option>
+                        <option value="Persiapan">Divisi Persiapan</option>
+                        <option value="Pemorsian">Divisi Pemorsian</option>
+                        <option value="Cuci Ompreng">Divisi Cuci Ompreng</option>
+                        <option value="Pengikatan">Divisi Pengikatan</option>
+                        <option value="Sanitasi dan Limbah">Divisi Sanitasi dan Limbah</option>
+                        <option value="Ahli Gizi">Ahli Gizi</option>
+                        <option value="Akuntan">Akuntan</option>
+                        <option value="KA SPPG">KA SPPG</option>
+                        <option value="OB">OB</option>
+                        <option value="Asisten Lapangan">Asisten Lapangan</option>
+                        <option value="Security">Security</option>
+                        <option value="Kenek">Kenek</option>
+                        <option value="KA. Cuci Ompreng">KA. Cuci Ompreng</option>
+                        <option value="KA. Driver">KA. Driver</option>
+                        <option value="KA. Dapur">KA. Dapur</option>
+                        <option value="KA. Pemorsian">KA. Pemorsian</option>
+                        <option value="KA. Persiapan">KA. Persiapan</option>
+                        <option value="Cuci Alat Masak">Cuci Alat Masak</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="employeePhone">Nomor WhatsApp:</label>
+                    <input type="text" id="employeePhone" placeholder="Contoh: 628123456789" value="085715388009">
+                </div>
+                
+                <div class="form-group">
+                    <label for="dailySalary">Gaji Harian (Rp):</label>
+                    <input type="number" id="dailySalary" placeholder="Masukkan gaji harian">
+                </div>
+                
+                <button class="secondary" onclick="addEmployee()">Simpan Data Karyawan</button>
+                
+                <div id="employeeSuccess" class="success-message">
+                    Data karyawan berhasil disimpan!
+                </div>
+                
+                <div id="employeeError" class="error-message">
+                    Terjadi kesalahan. Pastikan semua field terisi.
+                </div>
+            </div>
+            
+            <div class="admin-tab">
+                <div class="error-message">
+                    <i class="fas fa-exclamation-circle"></i> Hanya administrator yang dapat mengakses menu input karyawan.
+                </div>
+            </div>
+            
+            <h2 style="margin-top: 30px;">Daftar Karyawan</h2>
+            <div id="employeeList">
+                <!-- Daftar karyawan akan dimuat di sini -->
+            </div>
+        </div>
+        
+        <!-- Tab Absensi -->
+        <div id="attendance-tab" class="tab-content">
+            <h2>Absensi Karyawan dengan Swafoto</h2>
+            
+            <div class="search-container">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchEmployee" placeholder="Cari karyawan berdasarkan nama atau divisi..." onkeyup="filterEmployees()">
+            </div>
+            
+            <div class="form-group">
+                <label for="selectEmployee">Pilih Karyawan:</label>
+                <select id="selectEmployee">
+                    <option value="">Pilih Karyawan</option>
+                    <!-- Opsi karyawan akan diisi oleh JavaScript -->
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="attendanceType">Jenis Absensi:</label>
+                <select id="attendanceType">
+                    <option value="Masuk">Masuk</option>
+                    <option value="Pulang">Pulang</option>
+                    <option value="Izin">Izin</option>
+                    <option value="Sakit">Sakit</option>
+                </select>
+            </div>
+            
+            <div class="camera-container">
+                <h3>Ambil Swafoto</h3>
+                <div id="camera-access">
+                    <p>Kamera akan diaktifkan untuk mengambil foto absensi</p>
+                    <button onclick="initCamera()" class="secondary">Aktifkan Kamera</button>
+                </div>
+                
+                <div id="camera-view" style="display: none;">
+                    <video id="video" autoplay playsinline></video>
+                    <div class="camera-buttons">
+                        <button onclick="capturePhoto()" class="secondary"><i class="fas fa-camera"></i> Ambil Foto</button>
+                        <button onclick="stopCamera()" class="warning"><i class="fas fa-times"></i> Batal</button>
+                    </div>
+                </div>
+                
+                <div id="photo-result" style="display: none;">
+                    <div class="captured-photo">
+                        <img id="photo" src="" alt="Foto absensi">
+                    </div>
+                    <div class="photo-info">
+                        <p id="photo-info-text"></p>
+                    </div>
+                    <div class="camera-buttons">
+                        <button onclick="savePhoto()" class="secondary"><i class="fas fa-save"></i> Simpan Foto</button>
+                        <button onclick="retakePhoto()" class="warning"><i class="fas fa-redo"></i> Ambil Ulang</button>
+                    </div>
+                </div>
+            </div>
+            
+            <button id="attendance-btn" onclick="recordAttendanceWithPhoto()" style="display: none;">Catat Absensi dengan Foto</button>
+            
+            <div id="attendanceSuccess" class="success-message">
+                Absensi berhasil dicatat dengan foto!
+            </div>
+            
+            <div id="attendanceError" class="error-message">
+                Terjadi kesalahan. Pastikan karyawan dipilih dan foto diambil.
+            </div>
+            
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-number" id="totalEmployees">0</div>
+                    <div class="stat-title">Total Karyawan</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="presentToday">0</div>
+                    <div class="stat-title">Hadir Hari Ini</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="absentToday">0</div>
+                    <div class="stat-title">Tidak Hadir</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tab Laporan -->
+        <div id="report-tab" class="tab-content">
+            <h2>Laporan Absensi</h2>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="startDate">Dari Tanggal:</label>
+                    <input type="date" id="startDate">
+                </div>
+                <div class="form-group">
+                    <label for="endDate">Sampai Tanggal:</label>
+                    <input type="date" id="endDate">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="reportDivision">Filter Berdasarkan Divisi:</label>
+                <select id="reportDivision">
+                    <option value="">Semua Divisi</option>
+                    <option value="Masak">Divisi Masak</option>
+                    <option value="Persiapan">Divisi Persiapan</option>
+                    <option value="Pemorsian">Divisi Pemorsian</option>
+                    <option value="Cuci Ompreng">Divisi Cuci Ompreng</option>
+                    <option value="Pengikatan">Divisi Pengikatan</option>
+                    <option value="Sanitasi dan Limbah">Divisi Sanitasi dan Limbah</option>
+                    <option value="Ahli Gizi">Ahli Gizi</option>
+                    <option value="Akuntan">Akuntan</option>
+                    <option value="KA SPPG">KA SPPG</option>
+                    <option value="OB">OB</option>
+                    <option value="Asisten Lapangan">Asisten Lapangan</option>
+                    <option value="Security">Security</option>
+                    <option value="Kenek">Kenek</option>
+                    <option value="KA. Cuci Ompreng">KA. Cuci Ompreng</option>
+                    <option value="KA. Driver">KA. Driver</option>
+                    <option value="KA. Dapur">KA. Dapur</option>
+                    <option value="KA. Pemorsian">KA. Pemorsian</option>
+                    <option value="KA. Persiapan">KA. Persiapan</option>
+                    <option value="Cuci Alat Masak">Cuci Alat Masak</option>
+                </select>
+            </div>
+            
+            <button onclick="loadReport()">Muat Laporan</button>
+            <button class="secondary" onclick="exportToWhatsApp()">Kirim Laporan ke WhatsApp</button>
+            <button class="warning" onclick="downloadPDF()">Download Laporan PDF</button>
+            
+            <div id="reportError" class="error-message">
+                Tidak ada data absensi untuk periode ini.
+            </div>
+            
+            <div class="attendance-list">
+                <table id="reportTable">
+                    <thead>
+                        <tr>
+                            <th>Tanggal</th>
+                            <th>Nama</th>
+                            <th>Divisi</th>
+                            <th>Waktu</th>
+                            <th>Status</th>
+                            <th>PDF Absensi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="reportBody">
+                        <!-- Data laporan akan dimuat di sini -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Tab Penggajian -->
+        <div id="salary-tab" class="tab-content">
+            <h2>Sistem Penggajian</h2>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="salaryStartDate">Dari Tanggal:</label>
+                    <input type="date" id="salaryStartDate">
+                </div>
+                <div class="form-group">
+                    <label for="salaryEndDate">Sampai Tanggal:</label>
+                    <input type="date" id="salaryEndDate">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="salaryDivision">Filter Berdasarkan Divisi:</label>
+                <select id="salaryDivision">
+                    <option value="">Semua Divisi</option>
+                    <option value="Masak">Divisi Masak</option>
+                    <option value="Persiapan">Divisi Persiapan</option>
+                    <option value="Pemorsian">Divisi Pemorsian</option>
+                    <option value="Cuci Ompreng">Divisi Cuci Ompreng</option>
+                    <option value="Pengikatan">Divisi Pengikatan</option>
+                    <option value="Sanitasi dan Limbah">Divisi Sanitasi dan Limbah</option>
+                    <option value="Ahli Gizi">Ahli Gizi</option>
+                    <option value="Akuntan">Akuntan</option>
+                    <option value="KA SPPG">KA SPPG</option>
+                    <option value="OB">OB</option>
+                    <option value="Asisten Lapangan">Asisten Lapangan</option>
+                    <option value="Security">Security</option>
+                    <option value="Kenek">Kenek</option>
+                    <option value="KA. Cuci Ompreng">KA. Cuci Ompreng</option>
+                    <option value="KA. Driver">KA. Driver</option>
+                    <option value="KA. Dapur">KA. Dapur</option>
+                    <option value="KA. Pemorsian">KA. Pemorsian</option>
+                    <option value="KA. Persiapan">KA. Persiapan</option>
+                    <option value="Cuci Alat Masak">Cuci Alat Masak</option>
+                </select>
+            </div>
+            
+            <button onclick="calculateSalary()">Hitung Penggajian</button>
+            <button class="warning" onclick="downloadSalaryPDF()">Download Laporan Gaji PDF</button>
+            
+            <h3>Rekap Penggajian per Divisi</h3>
+            <div class="salary-table">
+                <table id="salaryTable">
+                    <thead>
+                        <tr>
+                            <th>Divisi</th>
+                            <th>Jumlah Karyawan</th>
+                            <th>Total Hari Kerja</th>
+                            <th>Total Gaji</th>
+                        </tr>
+                    </thead>
+                    <tbody id="salaryBody">
+                        <!-- Data gaji akan dimuat di sini -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <h3>Detail Penggajian per Karyawan</h3>
+            <div class="attendance-list">
+                <table id="salaryDetailTable">
+                    <thead>
+                        <tr>
+                            <th>Nama</th>
+                            <th>Divisi</th>
+                            <th>Hari Kerja</th>
+                            <th>Gaji Harian</th>
+                            <th>Total Gaji</th>
+                        </tr>
+                    </thead>
+                    <tbody id="salaryDetailBody">
+                        <!-- Data detail gaji akan dimuat di sini -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data karyawan dan absensi
+        let employees = [];
+        let attendance = {};
+        let isAdmin = false;
+        const adminCredentials = {
+            username: "admin",
+            password: "admin123"
+        };
+        
+        // Variabel untuk kamera
+        let stream = null;
+        let capturedPhotoData = null;
+        let currentEmployeeId = null;
+        let currentAttendanceType = null;
+        
+        // Data gaji per divisi (dalam Rupiah)
+        const divisionRates = {
+            "Masak": 120000,
+            "Persiapan": 100000,
+            "Pemorsian": 110000,
+            "Cuci Ompreng": 90000,
+            "Pengikatan": 95000,
+            "Sanitasi dan Limbah": 85000,
+            "Ahli Gizi": 150000,
+            "Akuntan": 130000,
+            "KA SPPG": 160000,
+            "OB": 80000,
+            "Asisten Lapangan": 110000,
+            "Security": 100000,
+            "Kenek": 100000,
+            "KA. Cuci Ompreng": 120000,
+            "KA. Driver": 130000,
+            "KA. Dapur": 140000,
+            "KA. Pemorsian": 130000,
+            "KA. Persiapan": 120000,
+            "Cuci Alat Masak": 95000
+        };
+        
+        // Fungsi untuk login administrator
+        function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            if (username === adminCredentials.username && password === adminCredentials.password) {
+                isAdmin = true;
+                document.getElementById('loginPage').style.display = 'none';
+                document.getElementById('appContainer').style.display = 'block';
+                document.body.classList.add('admin-active');
+                
+                // Muat data
+                loadData();
+                loadEmployees();
+                updateStats();
+                
+                // Set tanggal default untuk laporan
+                const today = new Date();
+                const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
+                
+                document.getElementById('startDate').value = firstDay.toISOString().substr(0, 10);
+                document.getElementById('endDate').value = today.toISOString().substr(0, 10);
+                document.getElementById('salaryStartDate').value = firstDay.toISOString().substr(0, 10);
+                document.getElementById('salaryEndDate').value = today.toISOString().substr(0, 10);
+            } else {
+                document.getElementById('loginError').style.display = 'block';
+                setTimeout(() => {
+                    document.getElementById('loginError').style.display = 'none';
+                }, 3000);
+            }
+        }
+        
+        // Fungsi untuk logout
+        function logout() {
+            isAdmin = false;
+            document.getElementById('appContainer').style.display = 'none';
+            document.getElementById('loginPage').style.display = 'block';
+            document.body.classList.remove('admin-active');
+        }
+        
+        // Fungsi untuk menampilkan tab
+        function showTab(tabId) {
+            // Sembunyikan semua tab
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Tampilkan tab yang dipilih
+            document.getElementById(tabId).classList.add('active');
+            
+            // Update tombol tab
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.classList.remove('active');
+            });
+            event.currentTarget.classList.add('active');
+            
+            // Jika tab laporan ditampilkan, muat laporan
+            if (tabId === 'report-tab') {
+                loadReport();
+            }
+            
+            // Jika tab penggajian ditampilkan, hitung gaji
+            if (tabId === 'salary-tab') {
+                calculateSalary();
+            }
+        }
+        
+        // Fungsi untuk menambah karyawan baru
+        function addEmployee() {
+            if (!isAdmin) return;
+            
+            const name = document.getElementById('employeeName').value;
+            const division = document.getElementById('employeeDivision').value;
+            const phone = document.getElementById('employeePhone').value;
+            const dailySalary = document.getElementById('dailySalary').value;
+            
+            if (!name || !division || !phone || !dailySalary) {
+                document.getElementById('employeeError').style.display = 'block';
+                setTimeout(() => {
+                    document.getElementById('employeeError').style.display = 'none';
+                }, 3000);
+                return;
+            }
+            
+            const newEmployee = {
+                id: Date.now(),
+                name: name,
+                division: division,
+                phone: phone,
+                dailySalary: parseInt(dailySalary)
+            };
+            
+            employees.push(newEmployee);
+            saveData();
+            loadEmployees();
+            updateEmployeeDropdown();
+            
+            // Reset form
+            document.getElementById('employeeName').value = '';
+            document.getElementById('employeeDivision').value = '';
+            document.getElementById('employeePhone').value = '';
+            document.getElementById('dailySalary').value = '';
+            
+            document.getElementById('employeeSuccess').style.display = 'block';
+            setTimeout(() => {
+                document.getElementById('employeeSuccess').style.display = 'none';
+            }, 3000);
+        }
+        
+        // Fungsi untuk menghapus karyawan
+        function deleteEmployee(id) {
+            if (!isAdmin) return;
+            
+            if (confirm('Apakah Anda yakin ingin menghapus karyawan ini?')) {
+                employees = employees.filter(emp => emp.id !== id);
+                saveData();
+                loadEmployees();
+                updateEmployeeDropdown();
+            }
+        }
+        
+        // Fungsi untuk memuat daftar karyawan
+        function loadEmployees() {
+            const employeeList = document.getElementById('employeeList');
+            employeeList.innerHTML = '';
+            
+            employees.forEach(employee => {
+                const employeeCard = document.createElement('div');
+                employeeCard.className = 'employee-card';
+                employeeCard.innerHTML = `
+                    <div class="employee-info">
+                        <div class="employee-name">${employee.name}</div>
+                        <div class="employee-division">${employee.division} - Gaji: Rp ${employee.dailySalary.toLocaleString('id-ID')}/hari</div>
+                    </div>
+                    <div class="employee-actions">
+                        <button class="action-btn whatsapp-btn" onclick="sendWhatsAppMessage(${employee.id})">
+                            <i class="fab fa-whatsapp"></i> WhatsApp
+                        </button>
+                        <button class="action-btn delete-btn" onclick="deleteEmployee(${employee.id})">
+                            <i class="fas fa-trash"></i> Hapus
+                        </button>
+                    </div>
+                `;
+                employeeList.appendChild(employeeCard);
+            });
+            
+            updateStats();
+        }
+        
+        // Fungsi untuk memperbarui dropdown karyawan
+        function updateEmployeeDropdown() {
+            const selectEmployee = document.getElementById('selectEmployee');
+            selectEmployee.innerHTML = '<option value="">Pilih Karyawan</option>';
+            
+            employees.forEach(employee => {
+                const option = document.createElement('option');
+                option.value = employee.id;
+                option.textContent = `${employee.name} - ${employee.division}`;
+                selectEmployee.appendChild(option);
+            });
+        }
+        
+        // Fungsi untuk mengirim pesan WhatsApp
+        function sendWhatsAppMessage(employeeId) {
+            const employee = employees.find(emp => emp.id === employeeId);
+            if (employee) {
+                const message = `Halo ${employee.name}, ini adalah pesan dari SPPG Gunung Picung #005 mengenai informasi absensi dan penggajian.`;
+                const whatsappUrl = `https://wa.me/${employee.phone}?text=${encodeURIComponent(message)}`;
+                window.open(whatsappUrl, '_blank');
+            }
+        }
+        
+        // Fungsi untuk memfilter karyawan
+        function filterEmployees() {
+            const searchTerm = document.getElementById('searchEmployee').value.toLowerCase();
+            const selectEmployee = document.getElementById('selectEmployee');
+            
+            // Kosongkan dropdown
+            selectEmployee.innerHTML = '<option value="">Pilih Karyawan</option>';
+            
+            // Filter karyawan berdasarkan pencarian
+            const filteredEmployees = employees.filter(employee => 
+                employee.name.toLowerCase().includes(searchTerm) || 
+                employee.division.toLowerCase().includes(searchTerm)
+            );
+            
+            // Tambahkan karyawan yang difilter ke dropdown
+            filteredEmployees.forEach(employee => {
+                const option = document.createElement('option');
+                option.value = employee.id;
+                option.textContent = `${employee.name} - ${employee.division}`;
+                selectEmployee.appendChild(option);
+            });
+        }
+        
+        // Fungsi untuk menginisialisasi kamera
+        function initCamera() {
+            const cameraAccess = document.getElementById('camera-access');
+            const cameraView = document.getElementById('camera-view');
+            
+            navigator.mediaDevices.getUserMedia({ video: true, audio: false })
+                .then(function(mediaStream) {
+                    stream = mediaStream;
+                    const video = document.getElementById('video');
+                    video.srcObject = mediaStream;
+                    video.style.display = 'block';
+                    
+                    cameraAccess.style.display = 'none';
+                    cameraView.style.display = 'block';
+                })
+                .catch(function(error) {
+                    alert('Tidak dapat mengakses kamera: ' + error.message);
+                });
+        }
+        
+        // Fungsi untuk menghentikan kamera
+        function stopCamera() {
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+                stream = null;
+            }
+            
+            document.getElementById('camera-access').style.display = 'block';
+            document.getElementById('camera-view').style.display = 'none';
+            document.getElementById('photo-result').style.display = 'none';
+            document.getElementById('video').style.display = 'none';
+        }
+        
+        // Fungsi untuk mengambil foto
+        function capturePhoto() {
+            const video = document.getElementById('video');
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+            
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+            
+            capturedPhotoData = canvas.toDataURL('image/png');
+            
+            // Tampilkan hasil foto
+            document.getElementById('photo').src = capturedPhotoData;
+            document.getElementById('photo-info-text').textContent = 'Foto berhasil diambil. Silakan simpan untuk melanjutkan.';
+            document.getElementById('photo-result').style.display = 'block';
+            document.getElementById('camera-view').style.display = 'none';
+            
+            // Tampilkan tombol untuk mencatat absensi
+            document.getElementById('attendance-btn').style.display = 'block';
+            
+            // Hentikan kamera
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+                stream = null;
+            }
+        }
+        
+        // Fungsi untuk mengambil ulang foto
+        function retakePhoto() {
+            document.getElementById('photo-result').style.display = 'none';
+            document.getElementById('camera-access').style.display = 'block';
+            document.getElementById('attendance-btn').style.display = 'none';
+            capturedPhotoData = null;
+        }
+        
+        // Fungsi untuk menyimpan foto
+        function savePhoto() {
+            if (!capturedPhotoData) {
+                alert('Tidak ada foto yang diambil.');
+                return;
+            }
+            
+            // Dapatkan data karyawan yang dipilih
+            const employeeId = document.getElementById('selectEmployee').value;
+            const attendanceType = document.getElementById('attendanceType').value;
+            
+            if (!employeeId) {
+                alert('Silakan pilih karyawan terlebih dahulu.');
+                return;
+            }
+            
+            currentEmployeeId = employeeId;
+            currentAttendanceType = attendanceType;
+            
+            alert('Foto berhasil disimpan. Silakan klik "Catat Absensi dengan Foto" untuk menyelesaikan proses.');
+        }
+        
+        // Fungsi untuk mencatat absensi dengan foto
+        function recordAttendanceWithPhoto() {
+            if (!currentEmployeeId || !capturedPhotoData) {
+                document.getElementById('attendanceError').style.display = 'block';
+                setTimeout(() => {
+                    document.getElementById('attendanceError').style.display = 'none';
+                }, 3000);
+                return;
+            }
+            
+            const employee = employees.find(emp => emp.id === parseInt(currentEmployeeId));
+            if (!employee) return;
+            
+            const now = new Date();
+            const dateKey = now.toISOString().split('T')[0];
+            const timeString = now.toLocaleTimeString('id-ID');
+            
+            // Buat PDF dengan foto
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            // Tambahkan judul
+            doc.setFontSize(18);
+            doc.text('BUKTI ABSENSI KARYAWAN', 105, 15, { align: 'center' });
+            
+            // Tambahkan garis pemisah
+            doc.line(10, 20, 200, 20);
+            
+            // Tambahkan informasi absensi
+            doc.setFontSize(12);
+            doc.text(`Nama: ${employee.name}`, 20, 30);
+            doc.text(`Divisi: ${employee.division}`, 20, 40);
+            doc.text(`Tanggal: ${now.toLocaleDateString('id-ID')}`, 20, 50);
+            doc.text(`Waktu: ${timeString}`, 20, 60);
+            doc.text(`Status: ${currentAttendanceType}`, 20, 70);
+            
+            // Tambahkan foto (dengan ukuran yang disesuaikan)
+            doc.addImage(capturedPhotoData, 'PNG', 20, 80, 80, 60);
+            
+            // Tambahkan informasi SPPG
+            doc.setFontSize(10);
+            doc.text('SPPG Gunung Picung #005 - Sistem Absensi Digital', 105, 150, { align: 'center' });
+            
+            // Simpan PDF sebagai data URL
+            const pdfData = doc.output('datauristring');
+            
+            // Simpan data absensi
+            if (!attendance[dateKey]) {
+                attendance[dateKey] = [];
+            }
+            
+            attendance[dateKey].push({
+                employeeId: employee.id,
+                name: employee.name,
+                division: employee.division,
+                time: timeString,
+                type: currentAttendanceType,
+                photo: pdfData // Simpan data PDF sebagai string
+            });
+            
+            saveData();
+            updateStats();
+            
+            // Reset state
+            capturedPhotoData = null;
+            currentEmployeeId = null;
+            document.getElementById('photo-result').style.display = 'none';
+            document.getElementById('camera-access').style.display = 'block';
+            document.getElementById('attendance-btn').style.display = 'none';
+            
+            document.getElementById('attendanceSuccess').style.display = 'block';
+            setTimeout(() => {
+                document.getElementById('attendanceSuccess').style.display = 'none';
+            }, 3000);
+        }
+        
+        // Fungsi untuk memperbarui statistik
+        function updateStats() {
+            document.getElementById('totalEmployees').textContent = employees.length;
+            
+            const today = new Date().toISOString().split('T')[0];
+            const todayAttendance = attendance[today] || [];
+            
+            // Hitung jumlah karyawan yang hadir hari ini
+            const presentCount = todayAttendance.filter(a => a.type === 'Masuk' || a.type === 'Pulang').length;
+            document.getElementById('presentToday').textContent = presentCount;
+            
+            // Hitung jumlah karyawan yang tidak hadir
+            document.getElementById('absentToday').textContent = employees.length - presentCount;
+        }
+        
+        // Fungsi untuk memuat laporan
+        function loadReport() {
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+            const divisionFilter = document.getElementById('reportDivision').value;
+            
+            const reportBody = document.getElementById('reportBody');
+            reportBody.innerHTML = '';
+            
+            let hasData = false;
+            
+            // Iterasi melalui semua tanggal dalam rentang
+            const currentDate = new Date(startDate);
+            const lastDate = new Date(endDate);
+            
+            while (currentDate <= lastDate) {
+                const dateKey = currentDate.toISOString().split('T')[0];
+                
+                if (attendance[dateKey]) {
+                    attendance[dateKey].forEach(record => {
+                        // Filter berdasarkan divisi jika dipilih
+                        if (divisionFilter && record.division !== divisionFilter) {
+                            return;
+                        }
+                        
+                        hasData = true;
+                        
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${new Date(dateKey).toLocaleDateString('id-ID')}</td>
+                            <td>${record.name}</td>
+                            <td>${record.division}</td>
+                            <td>${record.time}</td>
+                            <td>${record.type}</td>
+                            <td>
+                                <button class="action-btn" onclick="viewPDF('${record.photo}')">
+                                    <i class="fas fa-eye"></i> Lihat PDF
+                                </button>
+                            </td>
+                        `;
+                        reportBody.appendChild(row);
+                    });
+                }
+                
+                currentDate.setDate(currentDate.getDate() + 1);
+            }
+            
+            document.getElementById('reportError').style.display = hasData ? 'none' : 'block';
+        }
+        
+        // Fungsi untuk melihat PDF
+        function viewPDF(pdfData) {
+            const pdfWindow = window.open('');
+            pdfWindow.document.write(`
+                <iframe width="100%" height="100%" src="${pdfData}"></iframe>
+            `);
+        }
+        
+        // Fungsi untuk mengekspor laporan ke WhatsApp
+        function exportToWhatsApp() {
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+            const divisionFilter = document.getElementById('reportDivision').value;
+            
+            let message = `Laporan Absensi SPPG Gunung Picung #005\nPeriode: ${startDate} hingga ${endDate}\n\n`;
+            
+            // Iterasi melalui semua tanggal dalam rentang
+            const currentDate = new Date(startDate);
+            const lastDate = new Date(endDate);
+            
+            while (currentDate <= lastDate) {
+                const dateKey = currentDate.toISOString().split('T')[0];
+                
+                if (attendance[dateKey]) {
+                    message += `\nTanggal: ${new Date(dateKey).toLocaleDateString('id-ID')}\n`;
+                    
+                    attendance[dateKey].forEach(record => {
+                        // Filter berdasarkan divisi jika dipilih
+                        if (divisionFilter && record.division !== divisionFilter) {
+                            return;
+                        }
+                        
+                        message += `${record.name} (${record.division}) - ${record.time} - ${record.type}\n`;
+                    });
+                }
+                
+                currentDate.setDate(currentDate.getDate() + 1);
+            }
+            
+            const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank');
+        }
+        
+        // Fungsi untuk mengunduh PDF
+        function downloadPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            // Tambahkan judul
+            doc.setFontSize(16);
+            doc.text('LAPORAN ABSENSI KARYAWAN SPPG GUNUNG PICUNG #005', 105, 15, { align: 'center' });
+            
+            // Tambahkan informasi periode
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+            doc.setFontSize(12);
+            doc.text(`Periode: ${startDate} hingga ${endDate}`, 105, 25, { align: 'center' });
+            
+            // Buat tabel
+            const tableColumn = ["Tanggal", "Nama", "Divisi", "Waktu", "Status"];
+            const tableRows = [];
+            
+            // Iterasi melalui semua tanggal dalam rentang
+            const currentDate = new Date(startDate);
+            const lastDate = new Date(endDate);
+            const divisionFilter = document.getElementById('reportDivision').value;
+            
+            while (currentDate <= lastDate) {
+                const dateKey = currentDate.toISOString().split('T')[0];
+                
+                if (attendance[dateKey]) {
+                    attendance[dateKey].forEach(record => {
+                        // Filter berdasarkan divisi jika dipilih
+                        if (divisionFilter && record.division !== divisionFilter) {
+                            return;
+                        }
+                        
+                        const rowData = [
+                            new Date(dateKey).toLocaleDateString('id-ID'),
+                            record.name,
+                            record.division,
+                            record.time,
+                            record.type
+                        ];
+                        tableRows.push(rowData);
+                    });
+                }
+                
+                currentDate.setDate(currentDate.getDate() + 1);
+            }
+            
+            // Tambahkan tabel ke PDF
+            doc.autoTable({
+                head: [tableColumn],
+                body: tableRows,
+                startY: 35,
+                styles: { fontSize: 10 },
+                headStyles: { fillColor: [52, 152, 219] }
+            });
+            
+            // Simpan PDF
+            doc.save('laporan_absensi_sppg.pdf');
+        }
+        
+        // Fungsi untuk menghitung gaji
+        function calculateSalary() {
+            const startDate = document.getElementById('salaryStartDate').value;
+            const endDate = document.getElementById('salaryEndDate').value;
+            const divisionFilter = document.getElementById('salaryDivision').value;
+            
+            const salaryBody = document.getElementById('salaryBody');
+            const salaryDetailBody = document.getElementById('salaryDetailBody');
+            
+            salaryBody.innerHTML = '';
+            salaryDetailBody.innerHTML = '';
+            
+            // Hitung total hari kerja per karyawan
+            const workDays = {};
+            
+            employees.forEach(employee => {
+                workDays[employee.id] = 0;
+            });
+            
+            // Iterasi melalui semua tanggal dalam rentang
+            const currentDate = new Date(startDate);
+            const lastDate = new Date(endDate);
+            
+            while (currentDate <= lastDate) {
+                const dateKey = currentDate.toISOString().split('T')[0];
+                
+                if (attendance[dateKey]) {
+                    attendance[dateKey].forEach(record => {
+                        if (record.type === 'Masuk') {
+                            workDays[record.employeeId] = (workDays[record.employeeId] || 0) + 1;
+                        }
+                    });
+                }
+                
+                currentDate.setDate(currentDate.getDate() + 1);
+            }
+            
+            // Hitung total per divisi
+            const divisionSummary = {};
+            
+            employees.forEach(employee => {
+                // Filter berdasarkan divisi jika dipilih
+                if (divisionFilter && employee.division !== divisionFilter) {
+                    return;
+                }
+                
+                if (!divisionSummary[employee.division]) {
+                    divisionSummary[employee.division] = {
+                        count: 0,
+                        totalDays: 0,
+                        totalSalary: 0
+                    };
+                }
+                
+                divisionSummary[employee.division].count += 1;
+                divisionSummary[employee.division].totalDays += workDays[employee.id] || 0;
+                divisionSummary[employee.division].totalSalary += (workDays[employee.id] || 0) * employee.dailySalary;
+                
+                // Tambahkan ke tabel detail
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${employee.name}</td>
+                    <td>${employee.division}</td>
+                    <td>${workDays[employee.id] || 0}</td>
+                    <td>Rp ${employee.dailySalary.toLocaleString('id-ID')}</td>
+                    <td>Rp ${((workDays[employee.id] || 0) * employee.dailySalary).toLocaleString('id-ID')}</td>
+                `;
+                salaryDetailBody.appendChild(row);
+            });
+            
+            // Tambahkan ke tabel ringkasan
+            for (const division in divisionSummary) {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${division}</td>
+                    <td>${divisionSummary[division].count}</td>
+                    <td>${divisionSummary[division].totalDays}</td>
+                    <td>Rp ${divisionSummary[division].totalSalary.toLocaleString('id-ID')}</td>
+                `;
+                salaryBody.appendChild(row);
+            }
+        }
+        
+        // Fungsi untuk mengunduh laporan gaji PDF
+        function downloadSalaryPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            // Tambahkan judul
+            doc.setFontSize(16);
+            doc.text('LAPORAN PENGGAJIAN KARYAWAN SPPG GUNUNG PICUNG #005', 105, 15, { align: 'center' });
+            
+            // Tambahkan informasi periode
+            const startDate = document.getElementById('salaryStartDate').value;
+            const endDate = document.getElementById('salaryEndDate').value;
+            doc.setFontSize(12);
+            doc.text(`Periode: ${startDate} hingga ${endDate}`, 105, 25, { align: 'center' });
+            
+            // Buat tabel ringkasan
+            const tableColumn = ["Divisi", "Jumlah Karyawan", "Total Hari Kerja", "Total Gaji"];
+            const tableRows = [];
+            
+            // Hitung total hari kerja per karyawan
+            const workDays = {};
+            
+            employees.forEach(employee => {
+                workDays[employee.id] = 0;
+            });
+            
+            // Iterasi melalui semua tanggal dalam rentang
+            const currentDate = new Date(startDate);
+            const lastDate = new Date(endDate);
+            const divisionFilter = document.getElementById('salaryDivision').value;
+            
+            while (currentDate <= lastDate) {
+                const dateKey = currentDate.toISOString().split('T')[0];
+                
+                if (attendance[dateKey]) {
+                    attendance[dateKey].forEach(record => {
+                        if (record.type === 'Masuk') {
+                            workDays[record.employeeId] = (workDays[record.employeeId] || 0) + 1;
+                        }
+                    });
+                }
+                
+                currentDate.setDate(currentDate.getDate() + 1);
+            }
+            
+            // Hitung total per divisi
+            const divisionSummary = {};
+            
+            employees.forEach(employee => {
+                // Filter berdasarkan divisi jika dipilih
+                if (divisionFilter && employee.division !== divisionFilter) {
+                    return;
+                }
+                
+                if (!divisionSummary[employee.division]) {
+                    divisionSummary[employee.division] = {
+                        count: 0,
+                        totalDays: 0,
+                        totalSalary: 0
+                    };
+                }
+                
+                divisionSummary[employee.division].count += 1;
+                divisionSummary[employee.division].totalDays += workDays[employee.id] || 0;
+                divisionSummary[employee.division].totalSalary += (workDays[employee.id] || 0) * employee.dailySalary;
+            });
+            
+            // Tambahkan data ke tabel
+            for (const division in divisionSummary) {
+                const rowData = [
+                    division,
+                    divisionSummary[division].count,
+                    divisionSummary[division].totalDays,
+                    `Rp ${divisionSummary[division].totalSalary.toLocaleString('id-ID')}`
+                ];
+                tableRows.push(rowData);
+            }
+            
+            // Tambahkan tabel ke PDF
+            doc.autoTable({
+                head: [tableColumn],
+                body: tableRows,
+                startY: 35,
+                styles: { fontSize: 10 },
+                headStyles: { fillColor: [52, 152, 219] }
+            });
+            
+            // Simpan PDF
+            doc.save('laporan_gaji_sppg.pdf');
+        }
+        
+        // Fungsi untuk menyimpan data ke localStorage
+        function saveData() {
+            localStorage.setItem('sppg_employees', JSON.stringify(employees));
+            localStorage.setItem('sppg_attendance', JSON.stringify(attendance));
+        }
+        
+        // Fungsi untuk memuat data dari localStorage
+        function loadData() {
+            const savedEmployees = localStorage.getItem('sppg_employees');
+            const savedAttendance = localStorage.getItem('sppg_attendance');
+            
+            if (savedEmployees) {
+                employees = JSON.parse(savedEmployees);
+            }
+            
+            if (savedAttendance) {
+                attendance = JSON.parse(savedAttendance);
+            }
+            
+            updateEmployeeDropdown();
+        }
+        
+        // Inisialisasi aplikasi
+        window.onload = function() {
+            // Set tanggal default untuk input tanggal
+            const today = new Date();
+            document.getElementById('startDate').value = today.toISOString().substr(0, 10);
+            document.getElementById('endDate').value = today.toISOString().substr(0, 10);
+            document.getElementById('salaryStartDate').value = today.toISOString().substr(0, 10);
+            document.getElementById('salaryEndDate').value = today.toISOString().substr(0, 10);
+            
+            // Muat data karyawan contoh jika tidak ada data
+            if (employees.length === 0) {
+                employees = [
+                    { "id": 1, "name": "YANI HERAWATI", "division": "Asisten Lapangan", "phone": "085715388009", "dailySalary": 220000 },
+		    { "id": 2, "name": "SUPRIYADI", "division": "Security", "phone": "085715388009", "dailySalary": 150000 },
+		    { "id": 3, "name": "RIAN HARYADIN", "division": "KA. Cuci Ompreng", "phone": "085715388009", "dailySalary": 140000 },
+		    { "id": 4, "name": "AZIS JANUAR", "division": "Cuci Ompreng", "phone": "085715388009", "dailySalary": 120000 },
+  		    { "id": 5, "name": "EVANDI FEBRIANSYAH", "division": "Cuci Ompreng", "phone": "085715388009", "dailySalary": 120000 },
+  		    { "id": 6, "name": "HADI HIDAYAT", "division": "Cuci Ompreng", "phone": "085715388009", "dailySalary": 120000 },
+  	            { "id": 7, "name": "ILHAM KHOERUDIN", "division": "Cuci Ompreng", "phone": "085715388009", "dailySalary": 120000 },
+                    { "id": 8, "name": "INDRA", "division": "Cuci Ompreng", "phone": "085715388009", "dailySalary": 120000 },
+                    { "id": 9, "name": "MANDAR", "division": "Cuci Ompreng", "phone": "085715388009", "dailySalary": 120000 },
+                    { "id": 10, "name": "MUHAMMAD DAVIS PRATAMA", "division": "Cuci Ompreng", "phone": "085715388009", "dailySalary": 120000 },
+                    { "id": 11, "name": "FAHMIRUDIN", "division": "Cuci Ompreng", "phone": "085715388009", "dailySalary": 120000 },
+                    { "id": 12, "name": "RIO FEBRIAN", "division": "Cuci Ompreng", "phone": "085715388009", "dailySalary": 120000 },
+                    { "id": 13, "name": "AHMAD KANJI", "division": "Cuci Ompreng", "phone": "085715388009", "dailySalary": 120000 },
+                    { "id": 14, "name": "IRWANSYAH", "division": "Cuci Ompreng", "phone": "085715388009", "dailySalary": 120000 },
+                    { "id": 15, "name": "JUARIAH", "division": "Cuci Alat Masak", "phone": "085715388009", "dailySalary": 120000 },
+                    { "id": 16, "name": "SARTIKA DEWI", "division": "Cuci Alat Masak", "phone": "085715388009", "dailySalary": 120000 },
+                    { "id": 17, "name": "IMAM", "division": "KA. Driver", "phone": "085715388009", "dailySalary": 150000 },
+                    { "id": 18, "name": "SAJA", "division": "KA. Driver", "phone": "085715388009", "dailySalary": 150000 },
+                    { "id": 19, "name": "ANGGA FEBRI LUBIS", "division": "Kenek", "phone": "085715388009", "dailySalary": 115000 },
+                    { "id": 20, "name": "DANILLAHMUDIN", "division": "Kenek", "phone": "085715388009", "dailySalary": 115000 },
+                    { "id": 21, "name": "IBRAHIM PRATAMA", "division": "Kenek", "phone": "085715388009", "dailySalary": 115000 },
+                    { "id": 22, "name": "ARICK DARMAWAN", "division": "Kenek", "phone": "085715388009", "dailySalary": 115000 },
+                    { "id": 23, "name": "AMIRUDIN", "division": "KA. Dapur", "phone": "085715388009", "dailySalary": 200000 },
+                    { "id": 24, "name": "ADE", "division": "Masak", "phone": "085715388009", "dailySalary": 150000 },
+                    { "id": 25, "name": "SANDI IRAWAN", "division": "Masak", "phone": "085715388009", "dailySalary": 150000 },
+                    { "id": 26, "name": "MU'AMAR AHMAD RAMADHAN", "division": "Masak", "phone": "085715388009", "dailySalary": 150000 },
+                    { "id": 27, "name": "NENENG MINTARSIH", "division": "Masak", "phone": "085715388009", "dailySalary": 150000 },
+                    { "id": 28, "name": "NENG MEYLIMAWATI", "division": "Masak", "phone": "085715388009", "dailySalary": 150000 },
+                    { "id": 29, "name": "NURIASANAH BT TARJO", "division": "Masak", "phone": "085715388009", "dailySalary": 150000 },
+                    { "id": 30, "name": "DZOL FAHMI ROBANI", "division": "Masak", "phone": "085715388009", "dailySalary": 150000 },
+                    { "id": 31, "name": "ANGGI YULIASARI", "division": "KA. Pemorsian", "phone": "085715388009", "dailySalary": 150000 },
+                    { "id": 32, "name": "DAHLIA", "division": "Pemorsian", "phone": "085715388009", "dailySalary": 120000 },
+                    { "id": 33, "name": "EVI MAULINA", "division": "Pemorsian", "phone": "085715388009", "dailySalary": 120000 },
+                    { "id": 34, "name": "MUHAMAD YUNUS", "division": "Pemorsian", "phone": "085715388009", "dailySalary": 120000 },
+                    { "id": 35, "name": "RATU CIKAL AMALIA LAHMI", "division": "Pemorsian", "phone": "085715388009", "dailySalary": 120000 },
+                    { "id": 36, "name": "RISKIA RAHMAWATI", "division": "Pemorsian", "phone": "085715388009", "dailySalary": 120000 },
+                    { "id": 37, "name": "RIZKI MAULIDA", "division": "Pemorsian", "phone": "085715388009", "dailySalary": 120000 },
+                    { "id": 38, "name": "SALWA SALSABILA", "division": "Pemorsian", "phone": "085715388009", "dailySalary": 120000 },
+                    { "id": 39, "name": "SITI KAHLA KAMILA", "division": "Pemorsian", "phone": "085715388009", "dailySalary": 120000 },
+                    { "id": 40, "name": "YULIA AGUSTIN", "division": "Pemorsian", "phone": "085715388009", "dailySalary": 120000 },
+                    { "id": 41, "name": "NAHDIAH FAULINA BORU LUBIS", "division": "KA. Persiapan", "phone": "085715388009", "dailySalary": 140000 },
+                    { "id": 42, "name": "AHMAD RIPAI", "division": "Persiapan", "phone": "085715388009", "dailySalary": 115000 },
+                    { "id": 43, "name": "ELVIONITA BORU LUBIS", "division": "Persiapan", "phone": "085715388009", "dailySalary": 115000 },
+                    { "id": 44, "name": "NIA KURNIASHI", "division": "PersiapanN", "phone": "085715388009", "dailySalary": 115000 },
+                    { "id": 45, "name": "SISKA MEILINA WATI", "division": "Persiapan", "phone": "085715388009", "dailySalary": 115000 },
+                    { "id": 46, "name": "SITI MULIFAH", "division": "Persiapan", "phone": "085715388009", "dailySalary": 115000 },
+                    { "id": 47, "name": "JUNAEDI", "division": "Persiapan", "phone": "085715388009", "dailySalary": 115000 },
+                    { "id": 48, "name": "KARSI", "division": "Persiapan", "phone": "085715388009", "dailySalary": 115000 },
+                    { "id": 49, "name": "DONI SEPTIAN", "division": "Pengikatan", "phone": "085715388009", "dailySalary": 110000 },
+                    { "id": 50, "name": "PAREL BUDIMAN", "division": "Pengikatan", "phone": "085715388009", "dailySalary": 110000 },
+                    { "id": 51, "name": "ENDANG SUHENDAR", "division": "Sanitasi dan Limbah", "phone": "085715388009", "dailySalary": 150000 },
+                    { "id": 52, "name": "DARYANA KUSUMA", "division": "OB", "phone": "085715388009", "dailySalary": 115000 },
+                    { "id": 53, "name": "SURYA ADHARI", "division": "OB", "phone": "085715388009", "dailySalary": 115000 }
+                ];
+                saveData();
+            }
+            
+            updateEmployeeDropdown();
+        };
+    </script>
+</body>
+</html>
